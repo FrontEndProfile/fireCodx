@@ -1,0 +1,23 @@
+<ul>
+  <li class="text" *ngFor="let item of items$ | async">
+    {{ item.name }}
+    {{ item.age }}
+    <button (click)="onDeleteItemClick(item.id)">Delete</button>
+    <button (click)="onEditItemClick(item)">Edit</button>
+
+    <div *ngIf="isEditing && item.id === itemId">
+      <h2>Updating Item: {{ item.name }}</h2>
+
+      <form [formGroup]="dataForm" (submit)="addData()">
+        <label for="edit-first-name">First Name:</label>
+        <input id="edit-first-name" type="text" formControlName="name" required>
+
+        <label for="edit-last-name">Last Name:</label>
+        <input id="edit-last-name" type="text" formControlName="age" required>
+
+        <button type="submit">Update</button>
+        <button (click)="cancelEdit()">Cancel</button>
+      </form>
+    </div>
+  </li>
+</ul>

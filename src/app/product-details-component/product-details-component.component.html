@@ -1,0 +1,20 @@
+<!-- <h1>Product Details</h1>
+
+<div class="product-cards">
+  <div *ngFor="let product of items$ | async" class="product-card">
+    <p>{{ product.tittle }}</p>
+  </div>
+</div> -->
+
+
+<h1>Product Details</h1>
+
+<div *ngIf="product">
+  <h2>{{ product.tittle }}</h2>
+  <p>{{ product.description }}</p>
+  <!-- Add other product details as needed -->
+</div>
+
+<div *ngIf="!product">
+  <p>Product not found</p>
+</div>

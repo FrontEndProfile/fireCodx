@@ -1,0 +1,27 @@
+<h1>prod Form</h1>
+
+<form [formGroup]="dataForm">
+
+  <label for="first-name">Product Tittle: </label>
+  <input id="first-name" type="text" formControlName="tittle"> <br><br>
+
+  <label for="last-name">Product info: </label>
+  <input id="last-name" type="text" formControlName="description"> <br> <br>
+
+  <button type="submit" (click)="addData()">create prod</button>
+</form>
+
+
+<!-- <div class="product-cards">
+  <div *ngFor="let product of items$ | async" class="product-card">
+    <a [routerLink]="['/products', product.id]">{{ product.tittle }}</a>
+  </div>
+</div> -->
+
+
+<div class="product-cards">
+  <div *ngFor="let product of items$ | async" class="product-card">
+    <a [routerLink]="['/products', product.id]">{{ product.tittle }}</a>
+    <button (click)="onDeleteItemClick(product.id)">{{product.id}}</button>
+  </div>
+</div>
