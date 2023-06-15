@@ -10,6 +10,7 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { TestComponent } from './test/test.component';
 import { ProdComponent } from './prod/prod.component';
 import { ProductDetailsComponentComponent } from './product-details-component/product-details-component.component';
+import { FIREBASE_OPTIONS } from "@angular/fire/compat";
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ProductDetailsComponentComponent } from './product-details-component/pr
     provideFirestore(() => getFirestore()),
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [{ provide: FIREBASE_OPTIONS, useValue: environment.firebase }],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }
