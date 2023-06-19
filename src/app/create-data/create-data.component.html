@@ -1,0 +1,76 @@
+<section class="fromsData">
+  <div class="container">
+    <div class="fromsDataLayout">
+      <h1>Create Blog</h1>
+      <form [formGroup]="dataForm" (submit)="onSubmit($event)">
+        <input type="text" formControlName="heroHead" required placeholder="Blog Head">
+        <input type="text" formControlName="heroContent" placeholder="Blog Content">
+        <label>Blog Banner</label>
+        <input type="file" (change)="onFileSelected($event, 'heroImg')" accept="image/*">
+        <label>Blog video post</label>
+        <input type="file" (change)="onFileSelected($event, 'bannerVedioPost')" accept="image/*">
+        <label>Blog video</label>
+        <input type="file" (change)="onFileSelected($event, 'bannerVedio')" accept="image/*">
+        <label>Blog frameIntro</label>
+        <input type="file" (change)="onFileSelected($event, 'frameIntro')" accept="image/*">
+
+        <input type="text" formControlName="frameTittle" placeholder="Frame Tittle">
+        <input type="text" formControlName="frameContent" placeholder="Frame Content">
+        <label>Blog frameOne</label>
+        <input type="file" (change)="onFileSelected($event, 'frameOne')" accept="image/*">
+        <label>Blog frameTwo</label>
+        <input type="file" (change)="onFileSelected($event, 'frameTwo')" accept="image/*">
+        <label>Blog frameThree</label>
+        <input type="file" (change)="onFileSelected($event, 'frameThree')" accept="image/*">
+        <label>Blog viewLastBanner</label>
+        <input type="file" (change)="onFileSelected($event, 'viewLastBanner')" accept="image/*" >
+
+        <input type="text" formControlName="viewLastIntroTittle" placeholder="last Banner Tittle">
+        <input type="text" formControlName="viewLastIntroContent" placeholder="Last Banner Content">
+        
+        <div *ngIf="uploadPercent !== undefined">
+          Upload Progress: {{ uploadPercent }}%
+        </div>
+      
+        <button type="submit">Upload</button>
+      
+      </form>
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- <h1>orm</h1>
+
+<form [formGroup]="dataForm" (submit)="onSubmit($event)">
+  <label for="first-name">Product Title:</label>
+  <input id="first-name" type="text" formControlName="tittle"><br><br>
+
+  <label for="last-name">Product Info:</label>
+  <input id="last-name" type="text" formControlName="description"><br><br>
+
+  <label for="image-one">Product Image One:</label>
+  <input type="file" (change)="onFileSelected($event, 'imageOne')" accept="image/*"><br><br>
+
+  <label for="image-two">Product Image Two:</label>
+  <input type="file" (change)="onFileSelected($event, 'imageTwo')" accept="image/*"><br><br>
+
+  <div *ngIf="uploadPercent !== undefined">
+    Upload Progress: {{ uploadPercent }}%
+  </div><br>
+
+  <button type="submit">Save and Upload</button>
+</form> -->
+<br>
+<br>
+<br>
+
+
+<div class="product-cards">
+  <div *ngFor="let product of items$ | async" class="product-card">
+    <a [routerLink]="['/products', product.id]">{{ product.heroHead }}</a>
+    <button (click)="onDeleteItemClick(product.id)">{{product.id}}</button>
+  </div>
+</div>
