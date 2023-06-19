@@ -19,3 +19,12 @@
 
   <button type="submit">Save and Upload</button>
 </form>
+
+
+
+<div class="product-cards">
+  <div *ngFor="let product of items$ | async" class="product-card">
+    <a [routerLink]="['/products', product.id]">{{ product.tittle }}</a>
+    <button (click)="onDeleteItemClick(product.id)">{{product.id}}</button>
+  </div>
+</div>

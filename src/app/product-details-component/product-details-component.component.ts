@@ -60,6 +60,7 @@ export class ProductDetailsComponentComponent implements OnInit {
         const productSnapshot = await getDoc(productDoc);
         if (productSnapshot.exists()) {
           this.product = productSnapshot.data();
+          console.log('Product:', this.product);
         } else {
           console.log('Product not found');
         }

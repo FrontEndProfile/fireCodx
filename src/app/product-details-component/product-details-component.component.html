@@ -12,7 +12,10 @@
 <div *ngIf="product">
   <h2>{{ product.tittle }}</h2>
   <p>{{ product.description }}</p>
-  <img [src]="product.image" alt="">
+  <img [src]="product.images[0]" alt="">
+  <br>
+  <br>
+  <img [src]="product.images[1]" alt="">
 
   <!-- Add other product details as needed -->
 </div>

@@ -33,20 +33,20 @@ export class MediaComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder, private router: Router, private storage: AngularFireStorage) {
-        // Get data From fireBase 
-        const aCollection = collection(this.firestore, 'product')
-        // this.items$ = collectionData(aCollection);
-        this.items$ = collectionData(aCollection, { idField: 'id' });
-        this.items$.subscribe((data) => {
-          data.forEach((item) => {
-            const itemId = item.id;
-            const itemData = item;
-    
-            console.log('Document ID:', itemId);
-            // console.log('Document Data:', itemData);
-          });
-        });
-  
+    // Get data From fireBase 
+    const aCollection = collection(this.firestore, 'product')
+    // this.items$ = collectionData(aCollection);
+    this.items$ = collectionData(aCollection, { idField: 'id' });
+    this.items$.subscribe((data) => {
+      data.forEach((item) => {
+        const itemId = item.id;
+        const itemData = item;
+
+        console.log('Document ID:', itemId);
+        // console.log('Document Data:', itemData);
+      });
+    });
+
     this.dataForm = this.formBuilder.group({
       tittle: new FormControl(''),
       description: new FormControl(''),
@@ -55,7 +55,17 @@ export class MediaComponent implements OnInit {
     });
   }
 
-
+  //deleted list of items
+  onDeleteItemClick(product: string) {
+    const itemRef = doc(this.firestore, 'product', product);
+    deleteDoc(itemRef)
+      .then(() => {
+        console.log('Document deleted successfully!');
+      })
+      .catch((error) => {
+        console.error('Error deleting document:', error);
+      });
+  }
 
 
   async addData(imageUrls: any[]): Promise<void> {
@@ -74,22 +84,22 @@ export class MediaComponent implements OnInit {
     const files: FileList = event.target.files;
     this.selectedFiles[field] = Array.from(files);
   }
-  
+
   onSubmit(event: Event): void {
     event.preventDefault();
-  
+
     const uploadTasks: Observable<any>[] = [];
     const imageUrls: any[] = [];
-  
+
     for (const field in this.selectedFiles) {
       if (this.selectedFiles.hasOwnProperty(field)) {
         const files = this.selectedFiles[field];
-  
+
         for (const file of files) {
           const filePath = `cms/${file.name}`;
           const fileRef = this.storage.ref(filePath);
           const task = this.storage.upload(filePath, file);
-  
+
           uploadTasks.push(task.snapshotChanges().pipe(
             finalize(() => {
               fileRef.getDownloadURL().subscribe((url) => {
@@ -104,7 +114,7 @@ export class MediaComponent implements OnInit {
         }
       }
     }
-  
+
     if (uploadTasks.length === 0) {
       this.addData([]);
     } else {
@@ -119,6 +129,6 @@ export class MediaComponent implements OnInit {
 
 
   ngOnInit(): void {
-    
+
   }
 }
