@@ -108,7 +108,7 @@ export class ProdComponent implements OnInit {
               console.log('File available at:', url);
               // Perform further actions with the download URL
               console.log(url);
-              this.addData(url); // Call the addData() function passing the URL as an argument
+              this.addData(url);
             });
           }
         },
