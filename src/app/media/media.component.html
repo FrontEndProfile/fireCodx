@@ -1,0 +1,21 @@
+<h1>prod Form</h1>
+
+<form [formGroup]="dataForm" (submit)="onSubmit($event)">
+  <label for="first-name">Product Title:</label>
+  <input id="first-name" type="text" formControlName="tittle"><br><br>
+
+  <label for="last-name">Product Info:</label>
+  <input id="last-name" type="text" formControlName="description"><br><br>
+
+  <label for="image-one">Product Image One:</label>
+  <input type="file" (change)="onFileSelected($event, 'imageOne')" accept="image/*"><br><br>
+
+  <label for="image-two">Product Image Two:</label>
+  <input type="file" (change)="onFileSelected($event, 'imageTwo')" accept="image/*"><br><br>
+
+  <div *ngIf="uploadPercent !== undefined">
+    Upload Progress: {{ uploadPercent }}%
+  </div><br><br>
+
+  <button type="submit">Save and Upload</button>
+</form>

@@ -4,7 +4,7 @@ import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { AngularFireStorage, AngularFireStorageModule, AngularFireStorageReference } from '@angular/fire/compat/storage';
 
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs'; // data binding for used like API's
+import { finalize, forkJoin, Observable } from 'rxjs'; // data binding for used like API's
 
 @Component({
   selector: 'app-prod',
@@ -31,6 +31,10 @@ export class ProdComponent implements OnInit {
 
 
   ngUrl: any
+  imagLast: any
+
+
+  selectedFiles: File[] = [];
 
 
   constructor(private formBuilder: FormBuilder, private router: Router, private storage: AngularFireStorage) {
@@ -53,12 +57,12 @@ export class ProdComponent implements OnInit {
       tittle: new FormControl(''),
       description: new FormControl(''),
       image: this.ngUrl,
+      imagLast: this.imagLast,
     });
 
   }
 
   // Create DATA 
-  // standerd rules with ids 
   async addData(imageUrl: any): Promise<void> {
     // form data pass firebase / create collection data use with - interface
     const { tittle, description } = this.dataForm.value;
@@ -67,12 +71,14 @@ export class ProdComponent implements OnInit {
       tittle: tittle,
       description: description,
       image: imageUrl, // Assign the downloaded URL to the image property
+      imagLast: imageUrl
 
     });
     this.dataForm.reset();
     console.log("Document written with ID: ", docRef.id);
   }
-  //deleted
+
+  //deleted list of items
   onDeleteItemClick(product: string) {
     const itemRef = doc(this.firestore, 'product', product);
     deleteDoc(itemRef)
@@ -84,43 +90,46 @@ export class ProdComponent implements OnInit {
       });
   }
 
-  //upload media 
   onFileSelected(event: any): void {
-    this.selectedFile = event.target.files[0];
+    const files: FileList = event.target.files;
+    this.selectedFiles = Array.from(files);
   }
 
   onSubmit(event: Event): void {
     event.preventDefault();
 
-    if (this.selectedFile) {
-      const filePath = `cms/${this.selectedFile.name}`;
-      const fileRef = this.storage.ref(filePath);
-      const task = this.storage.upload(filePath, this.selectedFile);
+    if (this.selectedFiles.length > 0) {
+      const uploadTasks: Observable<any>[] = [];
 
-      task.percentageChanges().subscribe((percentage) => {
-        this.uploadPercent = Math.round(percentage || 0);
-      });
+      for (const file of this.selectedFiles) {
+        const filePath = `cms/${file.name}`;
+        const fileRef = this.storage.ref(filePath);
+        const task = this.storage.upload(filePath, file);
 
-      task.snapshotChanges().subscribe(
-        (snapshot) => {
-          if (snapshot!.state === 'success') {
+        uploadTasks.push(task.snapshotChanges().pipe(
+          finalize(() => {
             fileRef.getDownloadURL().subscribe((url) => {
               console.log('File available at:', url);
               // Perform further actions with the download URL
               console.log(url);
               this.addData(url);
             });
-          }
-        },
-        (error) => {
-          console.log('Upload error:', error);
-        }
-      );
+          })
+        ));
+      }
+
+      // Use forkJoin to wait for all the upload tasks to complete
+      forkJoin(uploadTasks).subscribe(() => {
+        console.log('All files uploaded successfully');
+      }, (error) => {
+        console.log('Upload error:', error);
+      });
     } else {
-      console.log('No file selected');
+      console.log('No files selected');
       this.addData(null);
     }
   }
+
 
   ngOnInit() {
     const productCollection = collection(this.firestore, 'product');

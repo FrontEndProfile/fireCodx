@@ -23,38 +23,38 @@ export class AppComponent implements OnInit {
 
   nameHard: any
   ageHard: any
-  dataForm: FormGroup
+  // dataForm: FormGroup
 
-  items$: Observable<any[]>;
+  // items$: Observable<any[]>;
   // set-ip FireBase 
   firestore: Firestore = inject(Firestore)
   itemId: any;
 
-  constructor(private formBuilder: FormBuilder) {
-    // Get data From fireBase 
-    const aCollection = collection(this.firestore, 'item')
-    // this.items$ = collectionData(aCollection);
-    this.items$ = collectionData(aCollection, { idField: 'id' });
+  // constructor(private formBuilder: FormBuilder) {
+  //   // Get data From fireBase 
+  //   const aCollection = collection(this.firestore, 'item')
+  //   // this.items$ = collectionData(aCollection);
+  //   this.items$ = collectionData(aCollection, { idField: 'id' });
 
-    this.items$.subscribe((data) => {
-      data.forEach((item) => {
-        const itemId = item.id;
-        const itemData = item;
+  //   this.items$.subscribe((data) => {
+  //     data.forEach((item) => {
+  //       const itemId = item.id;
+  //       const itemData = item;
   
-        console.log('Document ID:', itemId);
-        console.log('Document Data:', itemData);
-      });
-    });
+  //       console.log('Document ID:', itemId);
+  //       console.log('Document Data:', itemData);
+  //     });
+  //   });
 
-    // end code
+  //   // end code
 
-    // formBuilder data create hard-coded 
-    this.dataForm = this.formBuilder.group({
-      name: new FormControl(''),
-      age: new FormControl(''),
-    });
+  //   // formBuilder data create hard-coded 
+  //   this.dataForm = this.formBuilder.group({
+  //     name: new FormControl(''),
+  //     age: new FormControl(''),
+  //   });
 
-  }
+  // }
 
 
 
@@ -72,84 +72,84 @@ export class AppComponent implements OnInit {
   //   this.dataForm.reset();
   //   console.log("Document written with ID: ", docRef.id);
   // }
-  async addData() {
-    if (this.dataForm.valid) {
-      const { name, age } = this.dataForm.value;
-      const docRef = await addDoc(collection(this.firestore, 'item'), {
-        name: name,
-        age: age
-      });
-      console.log('Document written with ID:', docRef.id);
-      this.dataForm.reset();
-    } else {
-      console.log('Invalid form data. Please fill in all fields.');
-    }
-  }
+  // async addData() {
+  //   if (this.dataForm.valid) {
+  //     const { name, age } = this.dataForm.value;
+  //     const docRef = await addDoc(collection(this.firestore, 'item'), {
+  //       name: name,
+  //       age: age
+  //     });
+  //     console.log('Document written with ID:', docRef.id);
+  //     this.dataForm.reset();
+  //   } else {
+  //     console.log('Invalid form data. Please fill in all fields.');
+  //   }
+  // }
 
-  // vs 
+  // // vs 
 
-   onEditItemClick(item: any) {
-    this.dataForm.patchValue({
-      name: item.name,
-      age: item.age
-    });
-    this.formButtonLabel = 'Update';
-    this.itemId = item.id; // Store the item ID for updating
-  }
+  //  onEditItemClick(item: any) {
+  //   this.dataForm.patchValue({
+  //     name: item.name,
+  //     age: item.age
+  //   });
+  //   this.formButtonLabel = 'Update';
+  //   this.itemId = item.id; // Store the item ID for updating
+  // }
   
 
   // last 
-  async onFormSubmit() {
-    const { name, age } = this.dataForm.value;
+  // async onFormSubmit() {
+  //   const { name, age } = this.dataForm.value;
   
-    if (this.formButtonLabel === 'Add Data') {
-      // Add data
-      if (this.dataForm.valid) {
-        const docRef = await addDoc(collection(this.firestore, 'item'), {
-          name: name,
-          age: age
-        });
-        console.log('Document written with ID:', docRef.id);
-        this.dataForm.reset();
-      } else {
-        console.log('Invalid form data. Please fill in all fields.');
-      }
-    } else if (this.formButtonLabel === 'Update') {
-      // Update data
-      if (this.dataForm.valid) {
-        const itemRef = doc(this.firestore, 'item', this.itemId);
-        const updatedData = {
-          name: name,
-          age: age
-        };
-        await setDoc(itemRef, updatedData);
-        console.log('Data updated successfully!');
-        this.dataForm.reset();
-        this.formButtonLabel = 'Add Data'; // Reset the button label
-      } else {
-        console.log('Invalid form data. Please fill in all fields.');
-      }
-    }
-  }
+  //   if (this.formButtonLabel === 'Add Data') {
+  //     // Add data
+  //     if (this.dataForm.valid) {
+  //       const docRef = await addDoc(collection(this.firestore, 'item'), {
+  //         name: name,
+  //         age: age
+  //       });
+  //       console.log('Document written with ID:', docRef.id);
+  //       this.dataForm.reset();
+  //     } else {
+  //       console.log('Invalid form data. Please fill in all fields.');
+  //     }
+  //   } else if (this.formButtonLabel === 'Update') {
+  //     // Update data
+  //     if (this.dataForm.valid) {
+  //       const itemRef = doc(this.firestore, 'item', this.itemId);
+  //       const updatedData = {
+  //         name: name,
+  //         age: age
+  //       };
+  //       await setDoc(itemRef, updatedData);
+  //       console.log('Data updated successfully!');
+  //       this.dataForm.reset();
+  //       this.formButtonLabel = 'Add Data'; // Reset the button label
+  //     } else {
+  //       console.log('Invalid form data. Please fill in all fields.');
+  //     }
+  //   }
+  // }
   
   
   //error state
-  catch(e: any) {
-    console.error("Error adding document: ", e);
-  }
+  // catch(e: any) {
+  //   console.error("Error adding document: ", e);
+  // }
 
 
 //deleted
-  onDeleteItemClick(itemId: string) {
-    const itemRef = doc(this.firestore, 'item', itemId);
-    deleteDoc(itemRef)
-      .then(() => {
-        console.log('Document deleted successfully!');
-      })
-      .catch((error) => {
-        console.error('Error deleting document:', error);
-      });
-  }
+  // onDeleteItemClick(itemId: string) {
+  //   const itemRef = doc(this.firestore, 'item', itemId);
+  //   deleteDoc(itemRef)
+  //     .then(() => {
+  //       console.log('Document deleted successfully!');
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error deleting document:', error);
+  //     });
+  // }
 
 
 

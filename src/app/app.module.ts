@@ -7,17 +7,17 @@ import { AppComponent } from './app.component';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
-import { TestComponent } from './test/test.component';
 import { ProdComponent } from './prod/prod.component';
 import { ProductDetailsComponentComponent } from './product-details-component/product-details-component.component';
 import { FIREBASE_OPTIONS } from "@angular/fire/compat";
+import { MediaComponent } from './media/media.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TestComponent,
     ProdComponent,
-    ProductDetailsComponentComponent
+    ProductDetailsComponentComponent,
+    MediaComponent
   ],
   imports: [
     BrowserModule,
