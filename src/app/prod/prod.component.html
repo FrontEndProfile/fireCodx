@@ -32,7 +32,7 @@ html
 
 <div class="product-cards">
   <div *ngFor="let product of items$ | async" class="product-card">
-    <a [routerLink]="['/products', product.id]">{{ product.tittle }}</a>
+    <a [routerLink]="['/products', product.id]">{{ product.heroHead }}</a>
     <button (click)="onDeleteItemClick(product.id)">{{product.id}}</button>
   </div>
 </div>
