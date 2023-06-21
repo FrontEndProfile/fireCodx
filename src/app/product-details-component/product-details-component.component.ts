@@ -13,41 +13,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ProductDetailsComponentComponent implements OnInit {
 
-  // productId: any;
-  // product$: Observable<any> | undefined;
-  // items$: Observable<any[]>;
-  // // set-ip FireBase 
-  // firestore: Firestore = inject(Firestore)
-  // itemId: any;
-  
-  // constructor(private formBuilder: FormBuilder,private router: Router) {
-  //   // Get data From fireBase 
-  //   const aCollection = collection(this.firestore, 'product')
-  //   // this.items$ = collectionData(aCollection);
-  //   this.items$ = collectionData(aCollection, { idField: 'id' });
-  //   this.items$.subscribe((data) => {
-  //     data.forEach((item) => {
-  //       const itemId = item.id;
-  //       const itemData = item;
-  
-  //       console.log('Document ID:', itemId);
-  //       // console.log('Document Data:', itemData);
-  //     });
-  //   });
-
-  // }
-
-  // ngOnInit() {
-  //   // this.productId = this.route.snapshot.paramMap.get('id');
-  //   // this.getProductDetails();
-  // }
-
-  // getProductDetails() {
-  //   this.product$ = this.firestore.collection('products').doc(this.productId).valueChanges();
-  // }
-
-
-
   product: any;
 
   constructor(private route: ActivatedRoute, private firestore: Firestore) {}
