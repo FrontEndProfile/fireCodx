@@ -1,13 +1,24 @@
-
 <h1>Product Details</h1>
 
 <div *ngIf="product">
   <h2>{{ product.heroHead }}</h2>
+  <h2>{{ product.productId }}</h2>
   <p>{{ product.heroContent }}</p>
-  <img [src]="product.heroImg[0]" alt="">
-  <img [src]="product.heroImg[2]" alt="">
+  <img *ngIf="product.heroImg && product.heroImg.length > 0" [src]="product.heroImg[0]" width="200" alt="">
+  <img *ngIf="product.heroImg && product.heroImg.length > 2" [src]="product.heroImg[2]" width="200" alt="">
   <br>
   <br>
+  
+  <button (click)="openUpdateForm()">Update</button>
+  <form *ngIf="showUpdateForm" (submit)="saveUpdate()">
+    <label for="heroHead">Hero Head:</label>
+    <input type="text" id="heroHead" [(ngModel)]="updatedProduct.heroHead" name="heroHead">
+    
+    <label for="heroContent">Hero Content:</label>
+    <input type="text" id="heroContent" [(ngModel)]="updatedProduct.heroContent" name="heroContent">
+    
+    <button type="submit">Save</button>
+  </form>
 </div>
 
 <div *ngIf="!product">

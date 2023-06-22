@@ -13,24 +13,84 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ProductDetailsComponentComponent implements OnInit {
 
+
   product: any;
+  showUpdateForm = false;
+  updatedProduct: any = {};
 
-  constructor(private route: ActivatedRoute, private firestore: Firestore) {}
+  editId: any
 
-  ngOnInit() {
+
+
+
+
+  productId: any;
+
+
+
+
+  products: Observable<any[]> | undefined;
+
+  constructor(private route: ActivatedRoute, private firestore: Firestore) {
+
+  }
+
+
+  openUpdateForm() {
+    this.updatedProduct = {
+      heroHead: this.product.heroHead,
+      heroContent: this.product.heroContent,
+      // heroImg: [this.product.heroImg]
+    };
+    this.showUpdateForm = true;
+  }
+
+
+  // saveUpdate() {
+  //   this.onUpdateClicked(this.updatedProduct);
+  //   this.showUpdateForm = false;
+  // }
+  saveUpdate() {
+    const updatedProduct = { ...this.product }; // Create a new copy of the product object
+    Object.assign(updatedProduct, this.updatedProduct); // Merge the updated values from updatedProduct into the copy
+    this.onUpdateClicked(updatedProduct); // Pass the updated product object to the update function
+    this.product = updatedProduct; // Update the current product with the updated values
+    this.showUpdateForm = false;
+  }
+  onUpdateClicked(updatedData: any) {
+    const productDoc = doc(this.firestore, 'product', this.productId);
+    // const productDoc = doc(this.firestore, 'product', 'jeA78qVrVHwaYXfLsWca');
+    console.log('Update clicked');
+    console.log('Product Update ID:', this.productId);
+
+    updateDoc(productDoc, updatedData)
+      .then(() => {
+        console.log('Product updated successfully');
+      })
+      .catch((error) => {
+        console.error('Error updating product:', error);
+      });
+  }
+
+
+
+  ngOnInit(): void {
     this.route.paramMap.subscribe(async (params) => {
-      const productId = params.get('id');
-      if (productId) {
-        const productDoc = doc(this.firestore, 'product', productId);
+      // const productId = params.get('id');
+      this.productId = params.get('id');
+      if (this.productId) {
+        const productDoc = doc(this.firestore, 'product', this.productId);
         const productSnapshot = await getDoc(productDoc);
         if (productSnapshot.exists()) {
           this.product = productSnapshot.data();
           console.log('Product:', this.product);
+          console.log('Product ID:', this.productId);
+          console.log(this.productId);
         } else {
           console.log('Product not found');
         }
       }
     });
+
   }
-  
 }
